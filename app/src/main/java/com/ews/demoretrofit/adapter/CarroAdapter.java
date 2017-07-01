@@ -18,9 +18,11 @@ import java.util.List;
 public class CarroAdapter extends Adapter<CarroAdapter.CarrroViewHolder> {
 
     private List<Carro> carros;
+    private OnItemClickListener listener;
 
-    public CarroAdapter(List<Carro> carros) {
+    public CarroAdapter(List<Carro> carros, OnItemClickListener listener) {
         this.carros = carros;
+        this.listener = listener;
     }
 
     @Override
@@ -31,10 +33,17 @@ public class CarroAdapter extends Adapter<CarroAdapter.CarrroViewHolder> {
 
     @Override
     public void onBindViewHolder(CarrroViewHolder holder, int position) {
-        Carro carro = this.carros.get(position);
+        final Carro carro = this.carros.get(position);
         holder.marca.setText(carro.getMarca());
         holder.modelo.setText(carro.getModelo());
         holder.ano.setText(String.valueOf(carro.getAno()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickListener(carro);
+            }
+        });
     }
 
     @Override

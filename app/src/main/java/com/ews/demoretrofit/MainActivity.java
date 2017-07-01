@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ews.demoretrofit.adapter.CarroAdapter;
+import com.ews.demoretrofit.adapter.OnItemClickListener;
 import com.ews.demoretrofit.api.APICarros;
 import com.ews.demoretrofit.api.APIUtils;
 import com.ews.demoretrofit.model.Carro;
@@ -37,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
         carregaDados();
     }
 
+    OnItemClickListener listener = new OnItemClickListener() {
+        @Override
+        public void onClickListener(Carro carro) {
+            Toast.makeText(getApplicationContext(), carro.getMarca(), Toast.LENGTH_LONG).show();
+        }
+    };
+
     public void carregaDados()  {
 
         //TODO enqueue usado para nao travar a Thread Main
@@ -44,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Carro>> call, Response<List<Carro>> response) {
                 if (response.isSuccessful())
-                    recyclerView.setAdapter(new CarroAdapter(response.body()));
-
+                    recyclerView.setAdapter(new CarroAdapter(response.body(), listener));
             }
 
             @Override
